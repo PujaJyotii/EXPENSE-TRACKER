@@ -66,15 +66,15 @@ const history = useHistory()
             else{
               return res.json().then((data) => {
                 let errMessage='Authentication Failed';
-                if(data && data.error && data.error.message)
+                /*if(data && data.error && data.error.message)
                 {
                   errMessage=data.error.message
-                }
+                }*/
                 throw new Error(errMessage)
               })
             }
           }).then( (data) => {
-            authCtx.login(data.idToken)
+            authCtx.login(data.idToken ,data.email)
             
       history.replace('/welcome')
 
