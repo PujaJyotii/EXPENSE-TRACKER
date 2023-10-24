@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 
 import { useState } from "react";
@@ -7,6 +8,8 @@ const AuthContext = React.createContext({
     email:'',
     name:'',
     photourl:'',
+    expensedata:[],
+    addExpenses:(item)=> {},
     isLoggedIn:false,
     login:(token) => {},
     logout:() => {},
@@ -40,6 +43,7 @@ const AuthContext = React.createContext({
       const [token, setToken] = useState(getToken);
       const [email, setemail] = useState(getEmail);
       const [name, setname] = useState("");
+      const [expensedata, setexpensedata] = useState([]);
       const [photourl, setphotourl] = useState("");
       const userIsLoggedIn = !!token;
     
@@ -93,12 +97,62 @@ const AuthContext = React.createContext({
         
         
       }
+
+      useEffect(() => {
+        async function getExpensedata() {
+          let response = await axios.get(
+            "https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense.json"
+          );
+          if (response.status === 200) {
+            response = response.data;
+            let expensearr = [];
+            for (const key in response) {
+              expensearr.push({
+                id: key,
+                catogary: response[key].category,
+                description: response[key].description,
+                expense: response[key].expense,
+              });
+            }
+            setexpensedata(expensearr);
+          } else {
+            console.log("err", response);
+          }
+        }
+        getExpensedata();
+      }, []);
+    
+      async function addExpenseHandler(expense, description, category) {
+        let response = await axios.post(
+          "https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense.json",
+          {
+            expense,
+            description,
+            category,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          let dataArr = { category, description, expense, id: response.data.name };
+          setexpensedata((prev) => {
+            return [...prev, dataArr];
+          });
+        } else {
+          console.log("Error:" + response.data);
+        }
+      }
     
     const contextValue = {
         token:token,
         name: name,
     email: email,
     photourl: photourl,
+    expensedata:expensedata,
+    addExpenses:addExpenseHandler,
         isLoggedIn:userIsLoggedIn,
         login:loginHandler,
         logout:logoutHandler

@@ -1,12 +1,15 @@
-import { useState } from "react"
-import { Button, Card, Dropdown, DropdownButton, Form } from "react-bootstrap"
+import { useContext, useState } from "react"
+import { Button, Card ,Dropdown, DropdownButton, Form } from "react-bootstrap"
 import classes from './ExpensesForm.module.css'
 
+import AuthContext from "../Store/auth-context"
+
 const ExpensesForm = ( ) => {
+  const authCtx = useContext(AuthContext)
     const [expense,setExpenses] = useState('');
     const [description, setDescription] = useState('');
     const [category,setCategory] = useState('');
-    const [data,storedata]=useState([])
+  
     
     const SubmitHandler = (event) => {
        event.preventDefault() 
@@ -14,15 +17,9 @@ const ExpensesForm = ( ) => {
        {
         return
        }
-       const obj = {
-        expense :expense,
-        description : description,
-        category : category
-       }
+    
 
-       storedata((prev) => {
-        return [...prev, obj];
-      });
+       authCtx.addExpenses(expense,description,category)
 
       setExpenses('');
       setDescription('');
@@ -92,13 +89,14 @@ const ExpensesForm = ( ) => {
 </div>
 <Card className={classes.users}>
 <ul>
-    {data.map((item) => (
+    {authCtx.expensedata.map((item) => (
       <div key={item.description}>
-        <li>Money: {item.expense} -
+        <li>Money: Rs.{item.expense} -
         Description: {item.description}-
-        Catogary: {item.category}</li>
+        Category: {item.category}</li>
       </div>
     ))}
+    
     </ul>
     </Card>
     </>
