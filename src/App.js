@@ -8,6 +8,7 @@ import Layout from "./Layout/Layout";
 import StartingPage from "./StartingPage/StartingPage";
 import ProfilePage from "./Component/ProfilePage";
 import ForgotPassword from "./Component/ForgotPassword";
+import ExpensesForm from "./Expenses/ExpensesForm";
 
 
 
@@ -35,7 +36,9 @@ function App() {
  
 
       {authCtx.isLoggedIn && (<Route path='/welcome' >  <Welcome /> </Route>) }
+      
       {authCtx.isLoggedIn && (<Route path='/profile'><ProfilePage /></Route>)}
+      {authCtx.isLoggedIn && (<Route path='/expenses'><ExpensesForm /></Route>)}
 <Route path='*'>
   <Redirect to='/' />
 </Route>
