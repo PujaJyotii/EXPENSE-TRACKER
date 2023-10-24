@@ -10,6 +10,8 @@ const AuthContext = React.createContext({
     photourl:'',
     expensedata:[],
     addExpenses:(item)=> {},
+    deleteExpense: (id) => {},
+  editExpense: (items) => {},
     isLoggedIn:false,
     login:(token) => {},
     logout:() => {},
@@ -145,6 +147,53 @@ const AuthContext = React.createContext({
           console.log("Error:" + response.data);
         }
       }
+      async function deleteExpenseHandler(id) {
+        let copyexpensedata = [...expensedata];
+        copyexpensedata = copyexpensedata.filter((val) => {
+          return val.id !== id;
+        });
+        setexpensedata(copyexpensedata);
+    
+        let response = await axios.delete(
+          `https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense/${id}.json`
+        );
+        if (response.status === 200) {
+          alert("successfully deleted");
+        } else {
+          console.log("Error", response.data);
+        }
+      }
+    
+      async function editExpenseHandler(expense, description, category, id) {
+        let copyexpensedata = [...expensedata];
+        let expenseIndex = copyexpensedata.findIndex((val) => {
+          return val.id === id;
+        });
+    
+        copyexpensedata[expenseIndex].expense = expense;
+        copyexpensedata[expenseIndex].description = description;
+        copyexpensedata[expenseIndex].category = category;
+        setexpensedata(copyexpensedata);
+    
+        let response = await axios.put(
+          `https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense/${id}.json`,
+          {
+            expense,
+            description,
+            category,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log(response.data);
+        } else {
+          console.log("Error", response.data);
+        }
+      }
     
     const contextValue = {
         token:token,
@@ -153,6 +202,8 @@ const AuthContext = React.createContext({
     photourl: photourl,
     expensedata:expensedata,
     addExpenses:addExpenseHandler,
+    deleteExpense: deleteExpenseHandler,
+    editExpense: editExpenseHandler,
         isLoggedIn:userIsLoggedIn,
         login:loginHandler,
         logout:logoutHandler
