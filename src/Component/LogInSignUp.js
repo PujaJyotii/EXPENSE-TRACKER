@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useRef, useState } from "react";
 import {  Alert, Button, Card, Form } from "react-bootstrap"
 import AuthContext from "../Store/auth-context"
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 
 
@@ -127,6 +127,12 @@ return(
       onClick={switchAuthModeHandler}>
         {isLogin ? 'Create new account' : 'Login with existing account'}
         </Button> 
+
+       {isLogin && <Button
+              variant="link">
+                <Link to="/forgotPassword">Forgot Password?</Link>
+              
+            </Button>}
     </Form>
     </Card.Body>
     </Card>

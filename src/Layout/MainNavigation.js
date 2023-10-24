@@ -25,10 +25,15 @@ const MainNavigation = () => {
           {!isLoggedIn &&  (<li>
             <Link to='/login'>Login</Link>
           </li>)}
+
+          {isLoggedIn && (<li>
+            <Link to='/expenses'>Expenses</Link>
+          </li>)}
          
           {isLoggedIn && (<li>
             <button onClick={logoutHandler}>Logout</button>
           </li>)}
+
           
         </ul>
       </nav>
