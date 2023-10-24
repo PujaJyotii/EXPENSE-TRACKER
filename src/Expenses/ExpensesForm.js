@@ -13,7 +13,7 @@ const ExpensesForm = ( ) => {
     
     const SubmitHandler = (event) => {
        event.preventDefault() 
-       if(expense.trim().length === 0 || description.trim().length === 0 || category.trim().length === 0)
+       if(expense.length === 0 || description.length === 0 || category.length === 0)
        {
         return
        }
@@ -23,7 +23,12 @@ const ExpensesForm = ( ) => {
 
       setExpenses('');
       setDescription('');
-      setCategory("Select Category")
+      setCategory("")
+    }
+    function itemshowonForm(item) {
+      setExpenses(item.expense);
+      setDescription(item.description);
+      setCategory(item.category);
     }
 
 
@@ -93,7 +98,34 @@ const ExpensesForm = ( ) => {
       <div key={item.description}>
         <li>Money: Rs.{item.expense} -
         Description: {item.description}-
-        Category: {item.category}</li>
+        Category: {item.category}
+        </li><Button
+            variant="danger"
+            onClick={() => {
+              authCtx.deleteExpense(item.id);
+            }}
+            className="m-2"
+          >
+            Delete
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => {
+              itemshowonForm(item);
+            }}
+            className="m-2"
+          >
+            Edit
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => {
+              authCtx.editExpense(expense, description, category, item.id);
+            }}
+            className="m-2"
+          >
+            Edit form data
+          </Button>
       </div>
     ))}
     
