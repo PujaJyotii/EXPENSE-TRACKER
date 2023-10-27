@@ -4,17 +4,17 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 
 const AuthContext = React.createContext({
-    token:'',
-    email:'',
-    name:'',
-    photourl:'',
+    //token:'',
+    //email:'',
+    //name:'',
+    //photourl:'',
     expensedata:[],
     addExpenses:(item)=> {},
     deleteExpense: (id) => {},
   editExpense: (items) => {},
-    isLoggedIn:false,
-    login:(token) => {},
-    logout:() => {},
+    //isLoggedIn:false,
+    //login:(token) => {},
+    //logout:() => {},
 });
 
  export const AuthContextProvider = (props) => {
@@ -102,9 +102,7 @@ const AuthContext = React.createContext({
 
       useEffect(() => {
         async function getExpensedata() {
-          let response = await axios.get(
-            "https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense.json"
-          );
+          let response = await axios.get("https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense.json");
           if (response.status === 200) {
             response = response.data;
             let expensearr = [];
@@ -123,6 +121,7 @@ const AuthContext = React.createContext({
         }
         getExpensedata();
       }, []);
+      
     
       async function addExpenseHandler(expense, description, category) {
         let response = await axios.post(

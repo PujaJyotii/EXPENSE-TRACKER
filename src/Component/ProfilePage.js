@@ -1,15 +1,15 @@
 
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Button, Card, Form } from "react-bootstrap"
-import AuthContext from "../Store/auth-context";
-
+//import AuthContext from "../Store/auth-context";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => 
 {
-  const authCtx = useContext(AuthContext)
-  
-    const [name, setName] = useState(authCtx.name ?? "")
-    const [url, seturl] = useState(authCtx.photourl ?? "");
+  //const authCtx = useContext(AuthContext)
+  const token = useSelector((state) => state.auth.token);
+    const [name, setName] = useState("")
+    const [url, seturl] = useState("");
 
     const SubmitHandler = async (e) => {
       e.preventDefault();
@@ -24,7 +24,7 @@ const ProfilePage = () =>
           {
             method: "POST",
             body: JSON.stringify({
-              idToken: authCtx.token,
+              idToken: token,
               displayName : name,
               photoUrl : url,
               returnSecureToken: false,
