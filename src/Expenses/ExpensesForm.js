@@ -1,15 +1,27 @@
-import { useContext, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Card ,Dropdown, DropdownButton, Form } from "react-bootstrap"
 import classes from './ExpensesForm.module.css'
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getallExpense,
+  addExpense,
+  deleteExpense,
+  editExpense,
+} from "../ReduxStore/Expensedata";
 
-import AuthContext from "../Store/auth-context"
+//import AuthContext from "../Store/auth-context"
 
 const ExpensesForm = ( ) => {
-  const authCtx = useContext(AuthContext)
+  //const authCtx = useContext(AuthContext)
     const [expense,setExpenses] = useState('');
     const [description, setDescription] = useState('');
     const [category,setCategory] = useState('');
+    const data = useSelector((state) => state.expensedata.data);
   
+    const dispatch = useDispatch();
+    useEffect(() => {
+      dispatch(getallExpense());
+    }, [dispatch]);
     
     const SubmitHandler = (event) => {
        event.preventDefault() 
@@ -19,7 +31,7 @@ const ExpensesForm = ( ) => {
        }
     
 
-       authCtx.addExpenses(expense,description,category)
+       dispatch(addExpense({ expense, description, category }));
 
       setExpenses('');
       setDescription('');
@@ -94,15 +106,20 @@ const ExpensesForm = ( ) => {
 </div>
 <Card className={classes.users}>
 <ul>
-    {authCtx.expensedata.map((item) => (
+    {data.map((item) => (
       <div key={item.description}>
         <li>Money: Rs.{item.expense} -
         Description: {item.description}-
         Category: {item.category}
+        {item.expense > 10000 ? (
+            <Button variant="warning" className="m-2">
+              Active Premium Button
+            </Button>
+          ) : null}
         </li><Button
             variant="danger"
             onClick={() => {
-              authCtx.deleteExpense(item.id);
+              dispatch(deleteExpense(item.id));;
             }}
             className="m-2"
           >
@@ -115,12 +132,13 @@ const ExpensesForm = ( ) => {
             }}
             className="m-2"
           >
-            Edit
+            ItemShowonForm
           </Button>
           <Button
             variant="success"
             onClick={() => {
-              authCtx.editExpense(expense, description, category, item.id);
+              let id = item.id;
+              dispatch(editExpense({ expense, description, category, id }));
             }}
             className="m-2"
           >

@@ -1,8 +1,10 @@
-import { useContext } from "react";
+
 import { useRef, useState } from "react";
 import {  Alert, Button, Card, Form } from "react-bootstrap"
-import AuthContext from "../Store/auth-context"
+//import AuthContext from "../Store/auth-context"
 import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../ReduxStore/Auth";
 
 
 
@@ -10,9 +12,9 @@ const LogInSignUp = () => {
      const enteredEmailRef = useRef();
      const enteredPasswordRef = useRef()
      const enteredPasswordConfirmRef =useRef()
-     
+     const dispatch = useDispatch();
 
-const authCtx = useContext(AuthContext)
+//const authCtx = useContext(AuthContext)
 const history = useHistory()
  
 
@@ -74,9 +76,9 @@ const history = useHistory()
               })
             }
           }).then( (data) => {
-            authCtx.login(data.idToken ,data.email)
-            
-      history.replace('/welcome')
+            //authCtx.login(data.idToken, data.email);
+            dispatch(authActions.login({ token: data.idToken, email: data.email }));
+             history.replace('/welcome')
 
       
             
