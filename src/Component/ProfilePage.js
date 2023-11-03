@@ -1,15 +1,17 @@
 
-import {  useState } from "react";
+import {  useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap"
 //import AuthContext from "../Store/auth-context";
 import { useSelector } from "react-redux";
+import AuthContext from "../Store/auth-context";
 
 const ProfilePage = () => 
 {
   //const authCtx = useContext(AuthContext)
   const token = useSelector((state) => state.auth.token);
-    const [name, setName] = useState("")
-    const [url, seturl] = useState("");
+ const authCtx = useContext(AuthContext)
+    const [name, setName] = useState(authCtx.name ?? "")
+    const [url, seturl] = useState(authCtx.photourl ?? "");
 
     const SubmitHandler = async (e) => {
       e.preventDefault();
@@ -48,6 +50,7 @@ const ProfilePage = () =>
   
 
 return (
+  <div id={token ? "dark" : ""}>
     <div className="d-flex justify-content-center align-items-center h-100">
         
         <Card border="primary" style={{ width: '25rem'}} className="mb-4 mt-4" >
@@ -80,6 +83,7 @@ return (
     </Form>
     </Card.Body>
     </Card>
+</div>
 </div>
 )
 }

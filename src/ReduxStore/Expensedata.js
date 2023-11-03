@@ -54,10 +54,10 @@ export function getallExpense() {
         expensearr.push({
           id: key,
           expense: response[key].expense,
-          
+
           description: response[key].description,
           category: response[key].category,
-          
+
         });
       }
       dispatch(expensedataActions.manipulateData(expensearr));
@@ -86,17 +86,7 @@ export function editExpense({ expense, description, category, id }) {
       copyexpensedata[expenseIndex] = updatedExpense;
 
       dispatch(expensedataActions.manipulateData(copyexpensedata));
-      //   const state = getState();
-      //   let copyexpensedata = [...state.expensedata.data];
-
-      //   let expenseIndex = copyexpensedata.findIndex((val) => {
-      //     return val.id === id;
-      //   });
-
-      //   copyexpensedata[expenseIndex].spend = spend;
-      //   copyexpensedata[expenseIndex].description = description;
-      //   copyexpensedata[expenseIndex].catogary = catogary;
-      //   dispatch(expensedataActions.manipulateData(copyexpensedata));
+      
 
       const response = await axios.put(
         `https://react-expense-tracker-ad68f-default-rtdb.firebaseio.com/expense/${id}.json`,

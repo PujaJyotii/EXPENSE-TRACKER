@@ -7,7 +7,9 @@ import {
   addExpense,
   deleteExpense,
   editExpense,
-} from "../ReduxStore/Expensedata";
+} from "../ReduxStore/ExpenseData";
+import {  CSVLink } from "react-csv";
+import { themeActions } from "../StartingPage/Dashboard";
 
 //import AuthContext from "../Store/auth-context"
 
@@ -16,7 +18,9 @@ const ExpensesForm = ( ) => {
     const [expense,setExpenses] = useState('');
     const [description, setDescription] = useState('');
     const [category,setCategory] = useState('');
+    const [premium, setpremium] = useState(false);
     const data = useSelector((state) => state.expensedata.data);
+    const toggle = useSelector((state) => state.theme.toggle)
   
     const dispatch = useDispatch();
     useEffect(() => {
@@ -42,10 +46,16 @@ const ExpensesForm = ( ) => {
       setDescription(item.description);
       setCategory(item.category);
     }
+    function showdarkTheme() {
+      setpremium(true);
+      dispatch(themeActions.changeTheme());
+    }
+    
 
 
     return (
       <>
+       <div id={toggle ? "dark" : ""}>
         <div className="d-flex justify-content-center align-items-center h-100">
         
         <Card border="primary" style={{ width: '25rem'}} className="mb-4 mt-4" >
@@ -103,7 +113,21 @@ const ExpensesForm = ( ) => {
     </Form>
     </Card.Body>
     </Card>
+    
+    
+
+          
 </div>
+<div className="d-flex justify-content-center align-items-center h-100">
+<CSVLink data={data}>
+            {premium ? (
+              <Button variant="success" id="downloadfile">
+                Download all expense
+              </Button>
+            ) : null}
+          </CSVLink>
+          
+  </div>
 <Card className={classes.users}>
 <ul>
     {data.map((item) => (
@@ -112,10 +136,10 @@ const ExpensesForm = ( ) => {
         Description: {item.description}-
         Category: {item.category}
         {item.expense > 10000 ? (
-            <Button variant="warning" className="m-2">
-              Active Premium Button
-            </Button>
-          ) : null}
+             <Button variant="warning" className="m-2" onClick={showdarkTheme}>
+            Active Premium Button
+          </Button>
+        ) : null}
         </li><Button
             variant="danger"
             onClick={() => {
@@ -148,7 +172,11 @@ const ExpensesForm = ( ) => {
     ))}
     
     </ul>
+    
     </Card>
+    
+    
+    </div>
     </>
          
     )
