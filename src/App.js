@@ -1,8 +1,7 @@
 
 import React from "react";
-import {  Redirect, Route, Switch  } from "react-router-dom";
+import { Redirect   ,Route, Switch  } from "react-router-dom";
 import LogInSignUp from "./Component/LogInSignUp";
-import Welcome from "./Component/Welcome";
 
 import Layout from "./Layout/Layout";
 import StartingPage from "./StartingPage/StartingPage";
@@ -10,6 +9,8 @@ import ProfilePage from "./Component/ProfilePage";
 import ForgotPassword from "./Component/ForgotPassword";
 import ExpensesForm from "./Expenses/ExpensesForm";
 import { useSelector } from "react-redux";
+import Welcome from "./Component/Welcome";
+
 
 
 
@@ -34,17 +35,35 @@ function App() {
         {!isLoggedIn && (<Route path='/forgotPassword'>
           <ForgotPassword />
         </Route>)}
- 
-
-      {isLoggedIn && (<Route path='/welcome' >  <Welcome /> </Route>) }
+        
       
       {isLoggedIn && (<Route path='/profile'><ProfilePage /></Route>)}
       {isLoggedIn && (<Route path='/expenses'><ExpensesForm /></Route>)}
+      { isLoggedIn && (<Route path='/welcome'><Welcome /></Route>)}
+     {isLoggedIn && (<Route path='/'><Welcome /></Route>)}
+
+
+   
+        
+      
+    
+    
+       
 <Route path='*'>
-  <Redirect to='/' />
+  <Redirect to='/'/>
 </Route>
 
+ 
       
+              
+              
+      
+            
+          
+      
+
+           
+
 
       </Switch>
     

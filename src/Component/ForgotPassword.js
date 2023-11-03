@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap"
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 
 const ForgotPassword = () =>{
     const [mail, setmail] = useState("");
   const [loader, setloader] = useState(false);
+  const toggle = useSelector((state) => state.theme.toggle);
   async function ForgetPasswordHandler() {
     setloader(true);
     let response = await axios.post(
@@ -29,6 +31,7 @@ const ForgotPassword = () =>{
   }
 return (
     <>
+    <div id={toggle ? "dark" : ""}>
     <div className="d-flex justify-content-center align-items-center h-100">
         <Card border="primary" style={{ width: '25rem'}} className="mb-4 mt-4" >
             <Card.Body>
@@ -53,7 +56,7 @@ return (
       </Card.Body>
       </Card>
     </div>
-    
+    </div>
     </>
 )
 }

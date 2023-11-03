@@ -13,10 +13,11 @@ const LogInSignUp = () => {
      const enteredPasswordRef = useRef()
      const enteredPasswordConfirmRef =useRef()
      const dispatch = useDispatch();
+     
 
 //const authCtx = useContext(AuthContext)
-const history = useHistory()
- 
+//const history = useHistory()
+ const history = useHistory()
 
 
 
@@ -78,7 +79,8 @@ const history = useHistory()
           }).then( (data) => {
             //authCtx.login(data.idToken, data.email);
             dispatch(authActions.login({ token: data.idToken, email: data.email }));
-             history.replace('/welcome')
+          
+        history.replace('/welcome')
 
       
             
